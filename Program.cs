@@ -11,6 +11,7 @@ namespace AdventOfCode2021
             Console.WriteLine(Day02.SolveP1());
             Console.WriteLine(Day02.SolveP2());
             Console.WriteLine(Day03.SolveP1());
+            Console.WriteLine(Day03.SolveP2());
         }
     }
 }

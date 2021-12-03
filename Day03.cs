@@ -23,7 +23,24 @@ namespace AdventOfCode2021
 
         public static int SolveP2()
         {
-            return 0;
+            var data = System.IO.File.ReadAllLines("Input\\Day03.txt");
+            var oxygen = data;
+            var currentBit = 0;
+            while (oxygen.Length > 1)
+            {
+                var toKeep = oxygen.Where(x => x[currentBit] == '0').Count() * 2 > oxygen.Length ? '0' : '1';
+                oxygen = oxygen.Where(x => x[currentBit] == toKeep).ToArray();
+                currentBit++;
+            }
+            var co2 = data;
+            currentBit = 0;
+            while (co2.Length > 1)
+            {
+                var toKeep = co2.Where(x => x[currentBit] == '1').Count() * 2 < co2.Length ? '1' : '0';
+                co2 = co2.Where(x => x[currentBit] == toKeep).ToArray();
+                currentBit++;
+            }
+            return Convert.ToInt32(oxygen[0], 2) * Convert.ToInt32(co2[0], 2);
         }
     }
 }
