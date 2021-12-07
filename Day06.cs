@@ -30,20 +30,19 @@ namespace AdventOfCode2021
 
         public static long SolveP2()
         {
-            var fish = System.IO.File.ReadAllText("Input\\Day06.txt").Split(',').Select(x => int.Parse(x)).ToList();
-            var daysLeft = 256;
-            var fishCountByAge = new Dictionary<int, long>();
+            var fish = System.IO.File.ReadAllText("Input\\Day06.txt").Split(',').Select(x => int.Parse(x));
+            var fishCountByAge = new long[10];
             for (int i = 0; i < 10; i++)
-                fishCountByAge.Add(i, fish.Where(x => x == i).Count());
-            while (daysLeft-- > 0)
+                fishCountByAge[i] = fish.Where(x => x == i).Count();
+            for (int i = 0; i < 256; i++)
             {
                 fishCountByAge[9] = fishCountByAge[0];
                 fishCountByAge[7] += fishCountByAge[0];
-                for (int i = 0; i < 9; i++)
-                    fishCountByAge[i] = fishCountByAge[i + 1];
+                for (int j = 0; j < 9; j++)
+                    fishCountByAge[j] = fishCountByAge[j + 1];
             }
             fishCountByAge[9] = 0;
-            return fishCountByAge.Values.Sum();
+            return fishCountByAge.Sum();
         }
     }
 }
