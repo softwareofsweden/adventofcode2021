@@ -44,10 +44,6 @@ namespace AdventOfCode2021
                 pattern[4] = digits.Where(x => x.Length == 4).First();
                 pattern[7] = digits.Where(x => x.Length == 3).First();
                 pattern[8] = digits.Where(x => x.Length == 7).First();
-                digits.Remove(pattern[1]);
-                digits.Remove(pattern[4]);
-                digits.Remove(pattern[7]);
-                digits.Remove(pattern[8]);
                 pattern[3] = digits.Where(x => x.Length == 5 && nbrSame(x, pattern[1]) == 2).First();
                 digits.Remove(pattern[3]);
                 pattern[9] = digits.Where(x => x.Length == 6 && nbrSame(x, pattern[3]) == 5).First();
@@ -55,16 +51,13 @@ namespace AdventOfCode2021
                 pattern[0] = digits.Where(x => x.Length == 6 && nbrSame(x, pattern[1]) == 2).First();
                 digits.Remove(pattern[0]);
                 pattern[6] = digits.Where(x => x.Length == 6).First();
-                digits.Remove(pattern[6]);
-                pattern[5] = digits.Where(x => nbrSame(x, pattern[4]) == 3).First();
+                pattern[5] = digits.Where(x => x.Length == 5 && nbrSame(x, pattern[4]) == 3).First();
                 digits.Remove(pattern[5]);
-                pattern[2] = digits.First();
-                var idx1 = pattern.ToList().FindIndex(x => x.Length == output[0].Length && nbrSame(x, output[0]) == output[0].Length);
-                var idx2 = pattern.ToList().FindIndex(x => x.Length == output[1].Length && nbrSame(x, output[1]) == output[1].Length);
-                var idx3 = pattern.ToList().FindIndex(x => x.Length == output[2].Length && nbrSame(x, output[2]) == output[2].Length);
-                var idx4 = pattern.ToList().FindIndex(x => x.Length == output[3].Length && nbrSame(x, output[3]) == output[3].Length);
-                var value = idx1.ToString() + idx2.ToString() + idx3.ToString() + idx4.ToString();
-                total += int.Parse(value);
+                pattern[2] = digits.First(x => x.Length == 5);
+                var val = "";
+                for (int i = 0; i < 4; i++)
+                    val += pattern.ToList().FindIndex(x => x.Length == output[0].Length && nbrSame(x, output[0]) == output[0].Length).ToString();
+                total += int.Parse(val);
             }
             return total;
         }
