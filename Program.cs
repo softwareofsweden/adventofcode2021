@@ -23,6 +23,8 @@ namespace AdventOfCode2021
             Console.WriteLine(" 6.b  1749945484935 {0}{1}", Day06.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
             Console.WriteLine(" 7.a  353800        {0}{1}", Day07.SolveP1().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
             Console.WriteLine(" 7.b  98119739      {0}{1}", Day07.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
+            Console.WriteLine(" 8.a  303           {0}{1}", Day08.SolveP1().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
+            Console.WriteLine(" 8.b  961734        {0}{1}", Day08.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
             Console.WriteLine("--------------------------------------------------");
         }
     }
