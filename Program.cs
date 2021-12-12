@@ -6,9 +6,9 @@ namespace AdventOfCode2021
     {
         static void Main(string[] args)
         {
-            var start = DateTime.Now;
             Console.WriteLine("Day   Expected      {0}{1}", "Output".PadRight(20), "Duration");
             Console.WriteLine("--------------------------------------------------");
+            var start = DateTime.Now;
             Console.WriteLine(" 1.a  1752          {0}{1}", Day01.SolveP1().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
             start = DateTime.Now;
             Console.WriteLine(" 1.b  1781          {0}{1}", Day01.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
@@ -48,6 +48,10 @@ namespace AdventOfCode2021
             Console.WriteLine("10.a  436497        {0}{1}", Day10.SolveP1().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
             start = DateTime.Now;
             Console.WriteLine("10.b  2377613374    {0}{1}", Day10.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
+            start = DateTime.Now;
+            Console.WriteLine("11.a  1615          {0}{1}", Day11.SolveP1().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
+            start = DateTime.Now;
+            Console.WriteLine("11.b  249           {0}{1}", Day11.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
             start = DateTime.Now;
             Console.WriteLine("--------------------------------------------------");
         }
