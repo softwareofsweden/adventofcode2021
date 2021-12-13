@@ -57,6 +57,10 @@ namespace AdventOfCode2021
             start = DateTime.Now;
             Console.WriteLine("12.a  137948        {0}{1}", Day12.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
             start = DateTime.Now;
+            Console.WriteLine("13.a  671           {0}{1}", Day13.SolveP1().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
+            start = DateTime.Now;
+            Console.WriteLine("13.b  PCPHARKL      {0}{1}", Day13.SolveP2().ToString().PadRight(20), (DateTime.Now - start).Milliseconds);
+            start = DateTime.Now;
             Console.WriteLine("--------------------------------------------------");
         }
     }
