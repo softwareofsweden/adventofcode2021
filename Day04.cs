@@ -1,60 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2022
+namespace AdventOfCode2021
 {
-    internal class Day04 : Puzzle
+    class Day04
     {
-        /// <summary>
-        /// In how many assignment pairs does one range fully contain the other?
-        /// </summary>
-        /// <returns></returns>
-        protected override string SolveInternal1()
+        public static int SolveP1()
         {
-            var count = 0;
-            foreach (var pair in data)
+            var data = System.IO.File.ReadAllLines("Input\\Day04.txt");
+            var numbers = new Stack<int>(data[0].Split(',').Select(x => int.Parse(x)).Reverse().ToArray());
+            var boards = new List<int[]>();
+            for (int i = 2; i < data.Length; i += 6)
+                boards.Add(String.Join(" ", data.Skip(i).Take(5)).Replace("  ", " ").Trim().Split(' ').Select(x => int.Parse(x)).ToArray());
+            while (true)
             {
-                var parts = pair.Split(',');
-                var range1 = parts[0].Split('-');
-                var range1start = int.Parse(range1[0]);
-                var range1end = int.Parse(range1[1]);
-                var range2 = parts[1].Split('-');
-                var range2start = int.Parse(range2[0]);
-                var range2end = int.Parse(range2[1]);
-                if ((range1start >= range2start && range1end <= range2end) ||
-                    (range2start >= range1start && range2end <= range1end))
-                    count++;
+                var number = numbers.Pop();
+                foreach (var board in boards)
+                    for (int i = 0; i < 25; i++)
+                        if (board[i] == number)
+                        {
+                            board[i] = 999;
+                            var col = i % 5;
+                            var row = (int)Math.Floor(i / 5f);
+                            var colSum = board[col] + board[col + 5] + board[col + 10] + board[col + 15] + board[col + 20];
+                            var rowSum = board[row * 5] + board[row * 5 + 1] + board[row * 5 + 2] + board[row * 5 + 3] + board[row * 5 + 4];
+                            if (colSum == 999 * 5 || rowSum == 999 * 5)
+                                return board.Where(x => x != 999).Sum() * number;
+                            break;
+                        }
             }
-            return count.ToString();
         }
 
-        /// <summary>
-        /// In how many assignment pairs do the ranges overlap?
-        /// </summary>
-        /// <returns></returns>
-        protected override string SolveInternal2()
+        public static int SolveP2()
         {
-            var count = 0;
-            foreach (var pair in data)
+            var data = System.IO.File.ReadAllLines("Input\\Day04.txt");
+            var numbers = new Stack<int>(data[0].Split(',').Select(x => int.Parse(x)).Reverse().ToArray());
+            var boards = new List<int[]>();
+            for (int i = 2; i < data.Length; i += 6)
+                boards.Add(String.Join(" ", data.Skip(i).Take(5)).Replace("  ", " ").Trim().Split(' ').Select(x => int.Parse(x)).ToArray());
+            var boardsWon = new List<int>();
+            var lastScore = 0;
+            while (numbers.Count > 0)
             {
-                var parts = pair.Split(',');
-                var range1 = parts[0].Split('-');
-                var range1start = int.Parse(range1[0]);
-                var range1end = int.Parse(range1[1]);
-                var range2 = parts[1].Split('-');
-                var range2start = int.Parse(range2[0]);
-                var range2end = int.Parse(range2[1]);
-                if ((range1start >= range2start && range1start <= range2end) ||
-                    (range1end >= range2start && range1end <= range2end) ||
-                    (range2start >= range1start && range2start <= range1end) ||
-                    (range2end >= range1start && range2end <= range1end))
-                    count++;
+                var number = numbers.Pop();
+                var boardIndex = -1;
+                foreach (var board in boards)
+                {
+                    boardIndex++;
+                    if (boardsWon.Contains(boardIndex))
+                        continue;
+                    for (int i = 0; i < 25; i++)
+                        if (board[i] == number)
+                        {
+                            board[i] = 999;
+                            var col = i % 5;
+                            var row = (int)Math.Floor(i / 5f);
+                            var colSum = board[col] + board[col + 5] + board[col + 10] + board[col + 15] + board[col + 20];
+                            var rowSum = board[row * 5] + board[row * 5 + 1] + board[row * 5 + 2] + board[row * 5 + 3] + board[row * 5 + 4];
+                            if (colSum == 999 * 5 || rowSum == 999 * 5)
+                            {
+                                lastScore = board.Where(x => x != 999).Sum() * number;
+                                boardsWon.Add(boardIndex);
+                            }
+                            break;
+                        }
+                }
             }
-            return count.ToString();
+            return lastScore;
         }
     }
 }

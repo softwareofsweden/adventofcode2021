@@ -1,129 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2022
+namespace AdventOfCode2021
 {
-    internal class Day08 : Puzzle
+    class Day08
     {
-        /// <summary>
-        /// Consider your map; how many trees are visible from outside the grid?
-        /// </summary>
-        /// <returns></returns>
-        protected override string SolveInternal1()
+        public static int SolveP1()
         {
-            const int size = 99;
-            int[,] treeMap = new int[size, size];
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                    treeMap[x, y] = int.Parse(data[y][x].ToString());
-            var count = 0;
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                {
-                    var h = treeMap[x, y];
-                    var vis = true;
-                    for (int i = 0; i < y; i++)
-                        if (treeMap[x, i] >= h)
-                        {
-                            vis = false;
-                            break;
-                        }
-                    if (vis)
-                    {
-                        count++;
-                        continue;
-                    }
-                    vis = true;
-                    for (int i = size - 1; i > y; i--)
-                        if (treeMap[x, i] >= h)
-                        {
-                            vis = false;
-                            break;
-                        }
-                    if (vis)
-                    {
-                        count++;
-                        continue;
-                    }
-                    vis = true;
-                    for (int i = 0; i < x; i++)
-                        if (treeMap[i, y] >= h)
-                        {
-                            vis = false;
-                            break;
-                        }
-                    if (vis)
-                    {
-                        count++;
-                        continue;
-                    }
-                    vis = true;
-                    for (int i = size - 1; i > x; i--)
-                        if (treeMap[i, y] >= h)
-                        {
-                            vis = false;
-                            break;
-                        }
-                    if (vis)
-                        count++;
-                }
-            return count.ToString();
+            return String.Join("", System.IO.File.ReadAllLines("Input\\Day08.txt").Select(x => x.Split('|')[1])).Trim().Split(' ')
+                .Where(x => new int[] { 2, 4, 3, 7 }.Contains(x.Length)).Count();
         }
 
-        /// <summary>
-        /// Consider each tree on your map. What is the highest scenic 
-        /// score possible for any tree?
-        /// </summary>
-        /// <returns></returns>
-        protected override string SolveInternal2()
+        protected static int nbrSame(string s1, string s2)
         {
-            const int size = 99;
-            int[,] treeMap = new int[size, size];
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                    treeMap[x, y] = int.Parse(data[y][x].ToString());
-            var maxScore = 0;
-            for (int y = 1; y < size - 1; y++)
-                for (int x = 1; x < size - 1; x++)
-                {
-                    var h = treeMap[x, y];
-                    var upScore = 0;
-                    for (int i = y - 1; i >= 0; i--)
-                    {
-                        upScore++;
-                        if (treeMap[x, i] >= h)
-                            break;
-                    }
-                    var downScore = 0;
-                    for (int i = y + 1; i < size; i++)
-                    {
-                        downScore++;
-                        if (treeMap[x, i] >= h)
-                            break;
-                    }
-                    var leftScore = 0;
-                    for (int i = x - 1; i >= 0; i--)
-                    {
-                        leftScore++;
-                        if (treeMap[i, y] >= h)
-                            break;
-                    }
-                    var rightScore = 0;
-                    for (int i = x + 1; i < size; i++)
-                    {
-                        rightScore++;
-                        if (treeMap[i, y] >= h)
-                            break;
-                    }
-                    var score = upScore * downScore * leftScore * rightScore;
-                    if (score > maxScore)
-                        maxScore = score;
-                }
-            return maxScore.ToString();
+            var count = 0;
+            if (s1.Length > s2.Length)
+            {
+                for (int i = 0; i < s1.Length; i++)
+                    if (s2.Contains(s1[i]))
+                        count++;
+            } else
+            {
+                for (int i = 0; i < s2.Length; i++)
+                    if (s1.Contains(s2[i]))
+                        count++;
+            }
+            return count;
+        }
+
+        public static int SolveP2()
+        {
+            var total = 0;
+            foreach (var line in System.IO.File.ReadAllLines("Input\\Day08.txt"))
+            {
+                var parts = line.Split('|');
+                var digits = new List<string>(parts[0].Trim().Split(' '));
+                var output = parts[1].Trim().Split(' ');
+                var pattern = new string[10];
+                pattern[1] = digits.First(x => x.Length == 2);
+                pattern[4] = digits.First(x => x.Length == 4);
+                pattern[7] = digits.First(x => x.Length == 3);
+                pattern[8] = digits.First(x => x.Length == 7);
+                pattern[3] = digits.First(x => x.Length == 5 && nbrSame(x, pattern[1]) == 2);
+                digits.Remove(pattern[3]);
+                pattern[9] = digits.First(x => x.Length == 6 && nbrSame(x, pattern[3]) == 5);
+                digits.Remove(pattern[9]);
+                pattern[0] = digits.First(x => x.Length == 6 && nbrSame(x, pattern[1]) == 2);
+                digits.Remove(pattern[0]);
+                pattern[6] = digits.First(x => x.Length == 6);
+                pattern[5] = digits.First(x => x.Length == 5 && nbrSame(x, pattern[4]) == 3);
+                digits.Remove(pattern[5]);
+                pattern[2] = digits.First(x => x.Length == 5);
+                var val = "";
+                for (int i = 0; i < 4; i++)
+                    val += pattern.ToList().FindIndex(x => x.Length == output[0].Length && nbrSame(x, output[0]) == output[0].Length).ToString();
+                total += int.Parse(val);
+            }
+            return total;
         }
     }
 }
